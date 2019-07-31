@@ -9,7 +9,11 @@ class _FlexPageState extends State<FlexPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Text("弹性公交！"),
+      body: Stack(
+        children: <Widget>[
+
+        ],
+      ),
     );
   }
 }
