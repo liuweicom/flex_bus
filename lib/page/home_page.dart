@@ -10,7 +10,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   TabController _controller;
-  List<String> _tab = ["预约公交", "弹性公交"];
+  List<String> _tab = ["弹性公交", "预约公交"];
   @override
   void initState() {
     // TODO: implement initState
@@ -55,7 +55,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               Flexible(
                 child: TabBarView(
                   controller: _controller,
-                  children: <Widget>[OrderPage(), FlexPage()],
+                  children: <Widget>[FlexPage(), OrderPage()],
                   physics: ScrollPhysics(),
                 ),
               ),

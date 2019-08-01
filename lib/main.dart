@@ -1,9 +1,14 @@
+import 'package:amap_base/amap_base.dart';
 import 'package:flutter/material.dart';
 
 import 'page/home_page.dart';
 
-void main() => runApp(MyApp());
-
+//void main() => runApp(MyApp());
+void main() async {
+//  await AMap.init('73bb0040cdfef79757bac6ac64b7eb42');
+//  await AMapLocation().init();
+  runApp(MyApp());
+}
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
