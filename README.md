@@ -1,16 +1,27 @@
-# flex_bus
+# flex_bus出行需求分析：
+## 弹性公交
+功能点：
+1. 申诉违约（违约原因，客服电话）
+2. 我的订单
 
-A new Flutter project.
+- 点击订单可以快速预约
+- 订单详情（起点，终点，状态【已完成，已取消】，返回按钮）
+3. 搜索目的地：就近填写当前地点，目的地默认搜索当前附近站点，点击预约之后
+4. 弹出乘客须知（附近站点上车，或者对面上车，车辆未派车之前可以取消）
+5. 预约成功之后，状态栏给出提示【起点-终点，预计还有多长时间可以上车，此时，地图显示线路，显示当前车辆位置】
+## 预约公交
 
-## Getting Started
+## 车载端需求
+1. 司机绑定（绑定车牌，解绑车牌）
+2. 确认发车：显示订单详情，线路，途径的站点，司机信息
+3. 发车之后：下一站，（确认到站），订单详情（起点，终点，乘客号码，人数），上下车人数，确认线路结束
+4. 隐藏的功能点：地图显示线路，导航功能，走过的线路隐藏，到站语音提示，新订单语音提示，下一站语音提示，途径站点，定位
 
-This project is a starting point for a Flutter application.
+## 隐含需求
+1. 个人中心：用户反馈，关于我们，退出功能，身份认证，人脸登陆，
+2. 登陆页面手机号码注册（注册）
+3. 支付模块
+4. 切换城市
+5. 搜索地理位置
+6. 历史订单
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.dev/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
