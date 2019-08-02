@@ -108,7 +108,7 @@ class _FlexPageState extends State<FlexPage> with AutomaticKeepAliveClientMixin{
 //                          duration: Duration(seconds: 1),
 //                        ));
 //                        //interval: 5000,
-                        _updateMyLocationStyle(context, showMyLocation: true);//, myLocationIcon: "location_on",myLocationType: LOCATION_TYPE_FOLLOW
+                        _updateMyLocationStyle(context, showMyLocation: true,myLocationIcon: "location_on");//, myLocationIcon: "location_on",myLocationType: LOCATION_TYPE_FOLLOW
                       },
                     ),
 

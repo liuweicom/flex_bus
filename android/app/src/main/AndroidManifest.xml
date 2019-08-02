@@ -30,8 +30,8 @@
         android:label="flex_bus"
         android:icon="@mipmap/ic_launcher">
         <meta-data
-        android:name="com.amap.api.v2.apikey"
-        android:value="73bb0040cdfef79757bac6ac64b7eb42"/>
+                android:name="com.amap.api.v2.apikey"
+                android:value="24bd96f1f4ebd7ff2f1719000c275ac9"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
@@ -51,14 +51,5 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <!-- 高德导航activity -->
-        <!--<activity-->
-                <!--android:name="com.amap.api.navi.AmapRouteActivity"-->
-                <!--android:theme="@android:style/Theme.NoTitleBar"-->
-                <!--android:screenOrientation="portrait"-->
-                <!--android:configChanges="orientation|keyboardHidden|screenSize">-->
-
-        <!--</activity>-->
-        <!--<service android:name="com.amap.api.location.APSService"/>-->
     </application>
 </manifest>

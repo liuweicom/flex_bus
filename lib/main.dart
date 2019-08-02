@@ -5,7 +5,7 @@ import 'page/home_page.dart';
 
 //void main() => runApp(MyApp());
 void main() async {
-//  await AMap.init('73bb0040cdfef79757bac6ac64b7eb42');
+//  await AMap.init('24bd96f1f4ebd7ff2f1719000c275ac9');//在android端无效
 //  await AMapLocation().init();
   runApp(MyApp());
 }
