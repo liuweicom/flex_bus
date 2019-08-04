@@ -97,7 +97,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: Text("下一步"),
                   textColor: Colors.white,
                   color: Colors.blueAccent,
-                  onPressed: _rasedButtonPress(),
+                  onPressed: _raisedButtonPressed(),
                 ),
               ),
             ),
@@ -112,7 +112,6 @@ class _LoginPageState extends State<LoginPage> {
       icon: _iconItem(),
       focusedBorder:
       UnderlineInputBorder(borderSide: BorderSide(color: Colors.black54)),
-      border: UnderlineInputBorder(borderSide: BorderSide(color: Colors.red)),
       hintText: "请输入电话号码",
       hintStyle: TextStyle(color: Colors.black54),
     );
@@ -149,12 +148,13 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  _rasedButtonPress() {
+  _raisedButtonPressed() {
     if (!isEnable) {
       return null;
     } else {
       return () {
         print(_controller.text.toString() + "onPresede===========");
+        Navigator.pushNamed(context, "password", arguments: {"telephont": _controller.text});
       };
     }
   }

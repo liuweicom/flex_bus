@@ -1,4 +1,5 @@
 import 'package:flex_bus/page/login_page.dart';
+import 'package:flex_bus/page/password_page.dart';
 import 'package:flutter/material.dart';
 
 import 'page/home_page.dart';
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       routes: {
        "login": (BuildContext context) => LoginPage(),
-
+        "password": (BuildContext context) => PassWordPage(),
       },
       title: 'Flutter Demo',
       theme: ThemeData(
