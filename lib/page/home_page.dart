@@ -1,3 +1,4 @@
+import 'package:flex_bus/widget/drawer_widget.dart';
 import 'package:flutter/material.dart';
 
 import 'flex_page.dart';
@@ -10,7 +11,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   TabController _controller;
-  List<String> _tab = ["预约公交", "弹性公交"];
+  List<String> _tab = ["弹性公交", "预约公交"];
+//  DrawerController drawerController  = DrawerController(child: DrawerWidget(), alignment: DrawerAlignment.start);
   @override
   void initState() {
     // TODO: implement initState
@@ -18,19 +20,23 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     super.initState();
   }
 
+  void _handlerDrawerButton() {
+    Scaffold.of(context).openDrawer();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Drawer(
-        elevation: 10,
-        child: Text("抽屉！"),
-        semanticLabel: "label",
+      appBar: AppBar(
+        title: Text("上海"),
+//        leading: IconButton(icon: Icon(Icons.storage), onPressed: _handlerDrawerButton),
       ),
-      body: MediaQuery.removePadding(
-        removeTop: true,
-        context: context,
-        child: Container(
-          decoration: BoxDecoration(color: Colors.grey),
+      drawer: Drawer(child: DrawerWidget()),
+      body: Container(
+        decoration: BoxDecoration(color: Colors.grey),
+        child: MediaQuery.removePadding(
+          removeTop: true,
+          context: context,
           child: Column(
             children: <Widget>[
               _appBar(),
@@ -48,7 +54,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     onTap: (index) {
                       print(index.toString() + "index=========");
                     },
-                    tabs: _tab.map((item)=>_tabItem(item)).toList(),
+                    tabs: _tab.map((item) => _tabItem(item)).toList(),
                   ),
                 ),
               ),
@@ -69,8 +75,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   _appBar() {
     return Container(
       height: 66,
-      color: Colors.white,
-      padding: EdgeInsets.fromLTRB(7, 20, 7, 0),
+      color: Colors.red,
+      padding: EdgeInsets.fromLTRB(7, 25, 7, 0),
       child: Row(
         children: <Widget>[
           Padding(
@@ -78,6 +84,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             child: GestureDetector(
               onTap: () {
                 print("print--person----");
+                Navigator.pushNamed(context, "login");
               },
               child: Icon(
                 Icons.person,
