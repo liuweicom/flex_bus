@@ -5,6 +5,9 @@ A new Flutter project.
 ## Getting Started
 
 ## 全局共享数据之Provider
+参考:
+- [Flutter | 状态管理指南篇——Provider](https://juejin.im/post/5d00a84fe51d455a2f22023f#heading-18)
+
 1. 关于Provider的选择：
 - Provider:只提供恒定的数据，不能通知依赖它的子部件刷新
 - ListenableProvider ：此对象继承了Listenable抽象类的子类，由于无法混入，所以通过继承来获得 Listenable 的能力，同时必须实现其 addListener / removeListener 方法，手动管理收听者。ListenableProvider 同样可以接收混入的ChangeNotifier ，应为ChangeNotifier 为Listenable的实现
