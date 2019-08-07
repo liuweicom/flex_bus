@@ -6,17 +6,18 @@ import 'modal/user_info_model.dart';
 import 'page/home_page.dart';
 
 import 'package:provider/provider.dart';
+
+///关于Provider的选择：
+///Provider:只提供恒定的数据，不能通知依赖它的子部件刷新
+///ListenableProvider ：此对象继承了Listenable抽象类的子类，由于无法混入，所以通过继承来获得 Listenable 的能力，同时必须实现其 addListener / removeListener 方法，手动管理收听者。ListenableProvider 同样可以接收混入的ChangeNotifier ，应为ChangeNotifier 为Listenable的实现
+///ChangeNotifierProvider：自动帮我们实现了听众的管理，它能够对子节点提供一个 继承 / 混入 / 实现 了 ChangeNotifier 的类，需要数据更新的时候调用 notifyListeners。ChangeNotifierProvider 会在你需要的时候，自动调用其 _disposer 方法。 Model 中重写 ChangeNotifier 的 dispose 方法，来释放其资源。这对于复杂 Model 的情况下十分有用。
+///ValueListenableProvider：提供实现了 继承 / 混入 / 实现 了 ValueListenable 的 Model，专门用于处理只有一个单一变化数据的 ChangeNotifier， ValueListenable 处理的类不再需要数据更新的时候调用 notifyListeners
+///StreamProvider：用作提供（provide）一条 Single Stream，
+///FutureProvider：
 void main() {
   final userInfo = UserInfoModel();
   final textSize = 48;
   runApp(
-//    Provider<Object>.value(//能够管理一个恒定的数据，并提供给子孙节点使用
-//      value: textSize,
-//      child: ChangeNotifierProvider.value(//不仅能够提供数据供子孙节点使用，还可以在数据改变的时候通知所有听众刷新
-//        value: userInfo,
-//        child: MyApp(),
-//      )
-//  ),
   MultiProvider(//当存在多个Provider时，为了避免嵌套过多，存在多个model的时候
       providers: [
         Provider.value(value: textSize),
