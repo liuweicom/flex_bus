@@ -2,9 +2,30 @@ import 'package:flex_bus/page/login_page.dart';
 import 'package:flex_bus/page/password_page.dart';
 import 'package:flutter/material.dart';
 
+import 'modal/user_info_model.dart';
 import 'page/home_page.dart';
 
-void main() => runApp(MyApp());
+import 'package:provider/provider.dart';
+void main() {
+  final userInfo = UserInfoModel();
+  final textSize = 48;
+  runApp(
+//    Provider<Object>.value(//能够管理一个恒定的数据，并提供给子孙节点使用
+//      value: textSize,
+//      child: ChangeNotifierProvider.value(//不仅能够提供数据供子孙节点使用，还可以在数据改变的时候通知所有听众刷新
+//        value: userInfo,
+//        child: MyApp(),
+//      )
+//  ),
+  MultiProvider(//当存在多个Provider时，为了避免嵌套过多，存在多个model的时候
+      providers: [
+        Provider.value(value: textSize),
+        ChangeNotifierProvider.value(value: userInfo),
+      ],
+      child: MyApp(),
+  )
+  );
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -14,6 +35,7 @@ class MyApp extends StatelessWidget {
       routes: {
        "login": (BuildContext context) => LoginPage(),
         "password": (BuildContext context) => PassWordPage(),
+        "homePage": (BuildContext context) => HomePage(),
       },
       title: 'Flutter Demo',
       theme: ThemeData(

@@ -1,5 +1,7 @@
 import 'package:flex_bus/modal/ListTileModal.dart';
+import 'package:flex_bus/modal/user_info_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class DrawerWidget extends StatefulWidget {
   @override
@@ -7,32 +9,32 @@ class DrawerWidget extends StatefulWidget {
 }
 
 class _DrawerWidgetState extends State<DrawerWidget> {
-  List<ListTileModal> listTileData = [
-    ListTileModal(iconsData: Icons.assignment, title: "订单"),
-    ListTileModal(iconsData: Icons.verified_user, title: "安全"),
-    ListTileModal(iconsData: Icons.account_balance_wallet, title: "钱包"),
-    ListTileModal(iconsData: Icons.headset_mic, title: "客服"),
-    ListTileModal(iconsData: Icons.settings, title: "设置"),
-  ];
 
   @override
   Widget build(BuildContext context) {
+    //获取顶层数据最简单的方法，这里的泛型指定了获取该页面向上寻找最近存储了T的祖先节点的数据，如果使用这种方式更新，会导致频繁刷新context,导致页面刷新build函数
+    final userInfo = Provider.of<UserInfoModel>(context);//获取顶层数据最简单的方法就是 Provider.of<T>(context)
+    String telephone = userInfo.isLoginSuccess?? false ?((userInfo.telephone?.length ?? 0) >10 ? userInfo.telephone.replaceRange(3, 8, "*****") : "") :"";
+    print(userInfo.telephone.toString()+"print==========");
     return Container(
       padding: EdgeInsets.all(10),
       child: ListView(
         children: <Widget>[
-          _drawerHeaderWidget(),
-          _listTileWidget(Icons.person, "订单"),
-          _listTileWidget(Icons.verified_user, "安全"),
-          _listTileWidget(Icons.account_balance_wallet, "钱包"),
-          _listTileWidget(Icons.headset_mic, "客服"),
-          _listTileWidget(Icons.settings, "设置"),
+          _drawerHeaderWidget(telephone),
+          _listTileWidget(Icons.person, "订单",()=>print("订单========"), null),
+          _listTileWidget(Icons.verified_user, "安全",()=>print("安全========"), null),
+          _listTileWidget(Icons.account_balance_wallet, "钱包",()=>print("钱包========"), null),
+          _listTileWidget(Icons.headset_mic, "客服",()=>print("客服========"), null),
+          _listTileWidget(Icons.settings, "设置",()=>print("订单========"), null),
+          _listTileWidget(Icons.settings, "退出",(userInfo){
+            userInfo.setInfo("","","");
+          }, userInfo),
         ],
       ),
     );
   }
 
-  Widget _drawerHeaderWidget() {
+  Widget _drawerHeaderWidget(String telephone) {
     return Container(
       padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
       margin: EdgeInsets.only(bottom: 8),
@@ -61,7 +63,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               child: Padding(
                 padding: EdgeInsets.only(top: 10),
                 child: Text(
-                  "173*****631",
+                  telephone,
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                 ),
               ),
@@ -99,7 +101,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                             size: 12, color: Colors.black54),
                       ),
                     ],
-                  )),
+                  ),),
             ),
           ],
         ),
@@ -107,10 +109,10 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     );
   }
 
-  Widget _listTileWidget(iconsData, title) {
+  Widget _listTileWidget(iconsData, title, callBack, userInfo) {
     return InkWell(
       onTap: () {
-        print("listTileWidget=====" + title);
+        callBack(userInfo);
       },
       child: Container(
         height: 40,
@@ -146,10 +148,4 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     );
   }
 
-  List<Widget> _listTiles() {
-    return listTileData
-        .map(
-            (ListTileModal item) => _listTileWidget(item.iconsData, item.title))
-        .toList();
-  }
 }

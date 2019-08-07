@@ -1,4 +1,6 @@
+import 'package:flex_bus/modal/user_info_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 class PassWordPage extends StatefulWidget {
   final arguments;
   PassWordPage({key : Key, this.arguments});
@@ -14,6 +16,7 @@ class _PassWordPageState extends State<PassWordPage> {
 
   TextEditingController _controller = TextEditingController();
 
+//  Map<String,dynamic> routeArgument;
   @override
   void initState() {
     // TODO: implement initState
@@ -21,8 +24,13 @@ class _PassWordPageState extends State<PassWordPage> {
   }
   @override
   Widget build(BuildContext context) {
-    dynamic obj = ModalRoute.of(context).settings.arguments;//获取通过路由传过来的参数，这里是电话号码
-    print(obj.toString()+"params==========");
+    //方式一： Provider.of<T>(context)，这里的泛型指定了获取该页面向上寻找最近存储了T的祖先节点的数据，如果使用这种方式更新，会导致频繁刷新context,导致页面刷新build函数
+    //方法二：使用Consumer获取组件节点中的数据。
+    //Consumer使用了Builder模式，收到更新通知就会通过builder重新构建，Consumer<T>代表了他要获得哪一个祖先中的Model
+    //builder:(BuilderContext context,T model,Widget child){} //child它用来构建那些与Model无关的部分，在多次builder中，child不会重新构建
+
+    //    routeArgument = ModalRoute.of(context).settings.arguments;//获取通过路由传过来的参数，这里是电话号码
+
     return Scaffold(
       appBar: AppBar(
         leading: GestureDetector(
@@ -126,11 +134,14 @@ class _PassWordPageState extends State<PassWordPage> {
               padding: EdgeInsets.only(top: 20),
               child: FractionallySizedBox(
                 widthFactor: 1,
-                child: RaisedButton(
-                  child: Text("确认"),
+                child: Consumer(
+                    builder: (context, UserInfoModel userInfo, child)=>RaisedButton(
+                  child: child,
                   textColor: Colors.white,
                   color: Colors.blueAccent,
-                  onPressed: _raisedButtonPressed(),
+                  onPressed: _raisedButtonPressed(userInfo),
+                ),
+                  child: Text("确认"),
                 ),
               ),
             ),
@@ -140,12 +151,18 @@ class _PassWordPageState extends State<PassWordPage> {
     );
   }
 
-  _raisedButtonPressed() {
+  _raisedButtonPressed(UserInfoModel userInfo) {
     if (!isEnable) {
       return null;
     } else {
       return () {
         print(_controller.text.toString() + "onPresede===========");
+        userInfo.setPassWord(_controller.text.toString());
+        userInfo.setRoles("admin");
+        userInfo.setIsLoginSuccess(true);
+        Navigator.pop(context);
+        Navigator.pop(context);
+//        Navigator.pushNamed(context, "homePage");//没有按返回键，会回退到输入密码页，不是整整回退到首页
       };
     }
   }
