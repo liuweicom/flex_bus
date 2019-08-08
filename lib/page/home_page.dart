@@ -67,13 +67,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   controller: _controller,
                   children: <Widget>[FlexPage(),OrderPage(),],
                   physics: ScrollPhysics(),
-                ),),
+                ),
+                ),
               ),
               RaisedButton(
                 child: Text("弹性公交"),
                 onPressed: () {
                   NavigatorUtil.push(context, WebView(
-                    url: "http://ipts.zpmc.com/ids-admin/#/login",
+                    url: "http://ipts.zpmc.com/et-mobile/#/login",//http://ipts.zpmc.com/ids-admin/#/login
                     isNewPage: true,
                     title: "背景",
                   ));

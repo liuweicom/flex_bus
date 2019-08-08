@@ -85,7 +85,7 @@ class _WebViewState extends State<WebView> {
         Expanded(
           child: WebviewScaffold(
             url: widget.url,
-            userAgent: 'null',//防止携程h5页面重定向到打开携程app ctrip://wireless/xxx的网址
+            userAgent: 'xionganapp/1.0.0',//防止携程h5页面重定向到打开携程app ctrip://wireless/xxx的网址服务器能够识别客户使用的操作系统及版本、CPU 类型、浏览器及版本、浏览器渲染引擎、浏览器语言、浏览器插件
             withZoom: true,
             initialChild: Container(
               color: Colors.white,
