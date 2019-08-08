@@ -1,5 +1,6 @@
 import 'package:flex_bus/page/login_page.dart';
 import 'package:flex_bus/page/password_page.dart';
+import 'package:flex_bus/widget/webview_util.dart';
 import 'package:flutter/material.dart';
 
 import 'modal/user_info_model.dart';
@@ -38,7 +39,7 @@ class MyApp extends StatelessWidget {
         "password": (BuildContext context) => PassWordPage(),
         "homePage": (BuildContext context) => HomePage(),
       },
-      title: 'Flutter Demo',
+      title: 'flex_bus',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),

@@ -1,3 +1,4 @@
+import 'package:flex_bus/widget/webview_util.dart';
 import 'package:flutter/material.dart';
 
 class FlexPage extends StatefulWidget {
@@ -9,7 +10,10 @@ class _FlexPageState extends State<FlexPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Text("弹性公交！"),
+      body: Container(
+        color: Colors.blue,
+        child: Text("弹性公交=========="),
+      ),
     );
   }
 }

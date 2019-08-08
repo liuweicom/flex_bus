@@ -1,4 +1,6 @@
+import 'package:flex_bus/util/navigator_util.dart';
 import 'package:flex_bus/widget/drawer_widget.dart';
+import 'package:flex_bus/widget/webview_util.dart';
 import 'package:flutter/material.dart';
 
 import 'flex_page.dart';
@@ -59,11 +61,23 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 ),
               ),
               Flexible(
-                child: TabBarView(
+                child: Container(
+                  color: Colors.orangeAccent,
+                  child: TabBarView(
                   controller: _controller,
-                  children: <Widget>[OrderPage(), FlexPage()],
+                  children: <Widget>[FlexPage(),OrderPage(),],
                   physics: ScrollPhysics(),
-                ),
+                ),),
+              ),
+              RaisedButton(
+                child: Text("弹性公交"),
+                onPressed: () {
+                  NavigatorUtil.push(context, WebView(
+                    url: "http://ipts.zpmc.com/ids-admin/#/login",
+                    isNewPage: true,
+                    title: "背景",
+                  ));
+                }
               ),
             ],
           ),
