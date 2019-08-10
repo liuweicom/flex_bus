@@ -57,10 +57,6 @@ class _WebViewBridgeState extends State<WebViewBridgeInPage>{
             children: <Widget>[
               _appBar(
                   Color(int.parse("0xff" + statusBarColor)), backButtonColor),
-              Container(
-                  padding: EdgeInsets.all(10.0),
-                  child: progress < 1.0 ? LinearProgressIndicator(value: progress) : null
-              ),
               Expanded(
                 child: _webViewItem(context),
               ),
