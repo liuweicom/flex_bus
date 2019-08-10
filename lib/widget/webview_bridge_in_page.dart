@@ -5,8 +5,8 @@ import 'package:flex_bus/util/javascriptChannel_util.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-
-class WebViewBridge extends StatefulWidget {
+import 'package:flutter_inappbrowser/flutter_inappbrowser.dart';
+class WebViewBridgeInPage extends StatefulWidget {
   String url;
   final String statusBarColor;
   final String title;
@@ -14,25 +14,27 @@ class WebViewBridge extends StatefulWidget {
   final bool backForbid;
   final bool isNewPage;
 
-  WebViewBridge(
+  WebViewBridgeInPage(
       {Key key,
-      this.statusBarColor,
-      this.title,
-      this.hideAppBar,
-      this.backForbid,
-      this.isNewPage,
-      this.url})
+        this.statusBarColor,
+        this.title,
+        this.hideAppBar,
+        this.backForbid,
+        this.isNewPage,
+        this.url})
       : super(key: key);
   @override
   _WebViewBridgeState createState() => _WebViewBridgeState();
 }
 
-class _WebViewBridgeState extends State<WebViewBridge> {
+class _WebViewBridgeState extends State<WebViewBridgeInPage>{
   final Completer<WebViewController> _controller =
-      Completer<WebViewController>();
+  Completer<WebViewController>();
 
   WebViewController _webViewController;
 
+  double progress = 0;
+  InAppWebViewController _inAppWebViewController;
   @override
   Widget build(BuildContext context) {
     String statusBarColor = widget.statusBarColor ?? "ffffff";
@@ -50,19 +52,15 @@ class _WebViewBridgeState extends State<WebViewBridge> {
   Widget _newPageBuild(String statusBarColor, Color backButtonColor) {
     return WillPopScope(
       child: Scaffold(
-//        appBar: AppBar(
-//          title: const Text('Flutter WebView example'),
-//          // This drop down menu demonstrates that Flutter widgets can be shown over the web view.
-//          actions: <Widget>[
-//            NavigationControls(_controller.future),
-//            SampleMenu(_controller.future),
-//          ],
-//        ),
-        body: Builder(builder: (BuildContext context) {//如果不用builder的形式，在JavascriptChannel函数中toaster的组件显示不出来
+        body: Builder(builder: (BuildContext context) {
           return Column(
             children: <Widget>[
               _appBar(
                   Color(int.parse("0xff" + statusBarColor)), backButtonColor),
+              Container(
+                  padding: EdgeInsets.all(10.0),
+                  child: progress < 1.0 ? LinearProgressIndicator(value: progress) : null
+              ),
               Expanded(
                 child: _webViewItem(context),
               ),
@@ -89,16 +87,6 @@ class _WebViewBridgeState extends State<WebViewBridge> {
     return Builder(builder: (BuildContext context) => _webViewItem(context));
   }
 
-  //拦截函数
-  NavigationDecision _navigationDelegateCallback(NavigationRequest request) {
-//    //拦截请求
-//    if (request.url.startsWith('https://www.youtube.com/')) {
-//      print('拦截请求 $request}');
-//      return NavigationDecision.prevent;
-//    }
-    print('允许请求 $request');
-    return NavigationDecision.navigate;
-  }
 
   ///监听实体或者虚拟返回按钮，在第三方也页面中，先返回的是第三方的页面，如果已经返回到了主页，再次点击返回返回到flutter页面
   _onWillPop() {
@@ -152,24 +140,71 @@ class _WebViewBridgeState extends State<WebViewBridge> {
   }
 
   _webViewItem(BuildContext context) {
-    return WebView(
-      initialUrl: widget.url,
-      javascriptMode: JavascriptMode.unrestricted, //js执行模式，是否允许js执行
-      onWebViewCreated: (WebViewController webViewController) {
-        _controller.complete(webViewController);
-        setState(() {
-          _webViewController = webViewController;
-        });
-      },
-      javascriptChannels: JavascriptChannelUtil(
-              context: context, controller: _webViewController)
-          .getAllChannels()
-          .toSet(), //js可以调用flutter
-      navigationDelegate: _navigationDelegateCallback,
-      onPageFinished: (String url) {
-        //页面加载完成回调函数
-        print('页面完成加载: $url');
-      },
-    );
+    return Column(children: <Widget>[
+      Container(
+          child: progress < 1.0 ? LinearProgressIndicator(value: progress) : Container(height: 6,)
+      ),
+      Expanded(child:  InAppWebView(
+        initialUrl: "https://flutter.io/",
+        initialHeaders: {
+
+        },
+        initialOptions: {
+
+        },
+        onWebViewCreated: (InAppWebViewController controller) {
+          _inAppWebViewController = controller;
+          //js调用flutter允许有多个参数传入
+          _inAppWebViewController.addJavaScriptHandler('handlerFooWithArgs', (args) {
+            print(args);
+            return [args[0] + 5, !args[1], args[2][0], args[3]['foo']];
+          });
+          // webView.injectScriptCode("window.appSendJs('hello')");//flutter中调用js
+
+        },
+        onLoadStart: (InAppWebViewController controller, String url) {
+          //开始加载路径
+          print("started $url");
+        },
+        onLoadStop: (InAppWebViewController controller, String url) async {
+          //路径完毕，即将跳转心得路由
+          print("stopped $url");
+          print("ulr==========加载完毕==============即将跳转");
+          setState(() {
+            this.progress = 0;
+          });
+        },
+        onProgressChanged: (InAppWebViewController controller, int progress) {
+          print("progress"+progress.toString());
+          setState(() {
+            this.progress = progress/100;
+          });
+        },
+        shouldOverrideUrlLoading: (InAppWebViewController controller, String url) {
+          print("override $url");
+          controller.loadUrl(url);
+        },
+        onLoadResource: (InAppWebViewController controller, WebResourceResponse response, WebResourceRequest request) {
+          print("Started at: " +
+              response.startTime.toString() +
+              "ms ---> duration: " +
+              response.duration.toString() +
+              "ms " +
+              response.url);
+        },
+        onConsoleMessage: (InAppWebViewController controller, ConsoleMessage consoleMessage) {
+          print("""
+              console output:
+                sourceURL: ${consoleMessage.sourceURL}
+                lineNumber: ${consoleMessage.lineNumber}
+                message: ${consoleMessage.message}
+                messageLevel: ${consoleMessage.messageLevel}
+              """);
+        },
+      ),
+      ),
+    ],);
   }
+
+
 }

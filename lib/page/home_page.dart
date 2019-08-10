@@ -62,7 +62,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               ),
               Flexible(
                 child: Container(
-                  color: Colors.orangeAccent,
+                  color: Colors.grey,
                   child: TabBarView(
                   controller: _controller,
                   children: <Widget>[FlexPage(),OrderPage(),],

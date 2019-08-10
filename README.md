@@ -50,6 +50,31 @@ void main() {
   );
 }
 ````
+
+添加插件报错之后报错了
+````
+Error:Execution failed for task ':app:transformDexArchiveWithExternalLibsDexMergerForDebug'.
+
+> java.lang.RuntimeException: java.lang.RuntimeException:
+
+com.android.builder.dexing.DexArchiveMergerException: Unable to merge dex。
+````
+解决办法：
+在app的build.gradle中添添加
+ build.gradle 文件中的 defaultConfig 配置中添加配置：
+````
+defaultConfig {
+        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
+        applicationId "com.example.flex_bus"
+        minSdkVersion 17
+        targetSdkVersion 28
+        versionCode flutterVersionCode.toInteger()
+        versionName flutterVersionName
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+   +     multiDexEnabled true
+    }
+````
+
 - [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
 - [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
 
