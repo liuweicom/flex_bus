@@ -88,6 +88,7 @@ class _LoginPageState extends State<LoginPage> {
 
   TextField _TextFiledItem() {
     return TextField(
+      keyboardType: TextInputType.phone,
       controller: _controller,
       autofocus: true,
       cursorColor: Colors.grey,
