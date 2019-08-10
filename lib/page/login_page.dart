@@ -18,7 +18,8 @@ class _LoginPageState extends State<LoginPage> {
       appBar: _appBar(context),
       body: Container(
         padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
-        child: Column(
+        child: SingleChildScrollView(
+          child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -40,6 +41,7 @@ class _LoginPageState extends State<LoginPage> {
               child: _submitItem(),
             ),
           ],
+        ),
         ),
       ),
     );

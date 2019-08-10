@@ -48,7 +48,7 @@ class _PassWordPageState extends State<PassWordPage> {
       ),
       body: Container(
         padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
-        child: Column(
+        child: SingleChildScrollView(child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -135,17 +135,18 @@ class _PassWordPageState extends State<PassWordPage> {
               child: FractionallySizedBox(
                 widthFactor: 1,
                 child: Consumer(
-                    builder: (context, UserInfoModel userInfo, child)=>RaisedButton(
-                  child: child,
-                  textColor: Colors.white,
-                  color: Colors.blueAccent,
-                  onPressed: _raisedButtonPressed(userInfo),
-                ),
+                  builder: (context, UserInfoModel userInfo, child)=>RaisedButton(
+                    child: child,
+                    textColor: Colors.white,
+                    color: Colors.blueAccent,
+                    onPressed: _raisedButtonPressed(userInfo),
+                  ),
                   child: Text("确认"),
                 ),
               ),
             ),
           ],
+        ),
         ),
       ),
     );
