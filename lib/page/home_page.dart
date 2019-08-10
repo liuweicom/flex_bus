@@ -1,8 +1,10 @@
+import 'package:flex_bus/modal/user_info_model.dart';
 import 'package:flex_bus/util/navigator_util.dart';
 import 'package:flex_bus/widget/drawer_widget.dart';
 import 'package:flex_bus/widget/webview_bridge.dart';
 import 'package:flex_bus/widget/webview_bridge_in_page.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'flex_page.dart';
 import 'order_page.dart';
@@ -23,17 +25,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     super.initState();
   }
 
-  void _handlerDrawerButton() {
+  void _handlerDrawerButton(BuildContext context) {
     Scaffold.of(context).openDrawer();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("上海"),
-//        leading: IconButton(icon: Icon(Icons.storage), onPressed: _handlerDrawerButton),
-      ),
       drawer: Drawer(child: DrawerWidget()),
       body: Container(
         decoration: BoxDecoration(color: Colors.grey),
@@ -65,15 +63,18 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 child: Container(
                   color: Colors.grey,
                   child: TabBarView(
-                  controller: _controller,
-                  children: <Widget>[FlexPage(),OrderPage(),],
-                  physics: ScrollPhysics(),
-                ),
+                    controller: _controller,
+                    children: <Widget>[
+                      FlexPage(),
+                      OrderPage(),
+                    ],
+                    physics: ScrollPhysics(),
+                  ),
                 ),
               ),
               RaisedButton(
-                child: Text("弹性公交"),
-                onPressed: () {
+                  child: Text("弹性公交"),
+                  onPressed: () {
 //                  NavigatorUtil.push(context, WebView(
 //                    url: "http://ipts.zpmc.com/et-mobile/#/login",//http://ipts.zpmc.com/ids-admin/#/login
 //                    isNewPage: true,
@@ -84,13 +85,15 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 //                    isNewPage: true,
 //                    title: "背景",
 //                  ));
-                  NavigatorUtil.push(context, WebViewBridgeInPage(
-                    url: "https://flutter.dev",//http://ipts.zpmc.com/ids-admin/#/login // "http://ipts.zpmc.com/et-mobile/#/login"
-                    isNewPage: true,
-                    title: "背景",
-                  ));
-                }
-              ),
+                    NavigatorUtil.push(
+                        context,
+                        WebViewBridgeInPage(
+                          url:
+                              "https://flutter.dev", //http://ipts.zpmc.com/ids-admin/#/login // "http://ipts.zpmc.com/et-mobile/#/login"
+                          isNewPage: true,
+                          title: "背景",
+                        ));
+                  }),
             ],
           ),
         ),
@@ -99,78 +102,90 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   }
 
   _appBar() {
-    return Container(
-      height: 66,
-      color: Colors.red,
-      padding: EdgeInsets.fromLTRB(7, 25, 7, 0),
-      child: Row(
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-            child: GestureDetector(
-              onTap: () {
-                print("print--person----");
-                Navigator.pushNamed(context, "login");
-              },
-              child: Icon(
-                Icons.person,
-                size: 26,
-                color: Colors.black,
-              ),
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Center(
-              child: GestureDetector(
-                onTap: () {
-                  print("switch-city---------");
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text("上海市"),
-                    Icon(
-                      Icons.expand_more,
-                      size: 20,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          Container(
+    //这里一定要用Builder的形式去创建组件，应为要调用_handlerDrawerButton需要用到context，及时运用值传递的方式同builder函数传递过来的context是无效的，原因我也不知道
+    return Builder(
+      builder: (BuildContext context) => Container(
+            height: 66,
+            color: Colors.white,
+            padding: EdgeInsets.fromLTRB(7, 25, 7, 0),
             child: Row(
               children: <Widget>[
-                GestureDetector(
-                  child: Icon(
-                    Icons.message,
-                    size: 20,
-                    color: Colors.black,
-                  ),
-                  onTap: () {
-                    print("message==========");
-                  },
-                ),
                 Padding(
-                  padding:
-                      EdgeInsets.only(left: 20, top: 0, right: 10, bottom: 0),
-                  child: GestureDetector(
+                  padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                  child: Consumer(
+                    builder: (context, UserInfoModel userInfo, child)=>GestureDetector(
+                      onTap: (){
+                        print("print--person----");
+                        bool isLoginSuccess = userInfo.isLoginSuccess ?? false;
+                        print("isLoginSuccess:"+isLoginSuccess.toString()+"===================");
+                        if(isLoginSuccess){
+                          _handlerDrawerButton(context);
+                        }else{
+                          Navigator.pushNamed(context, "login");
+                        }
+                      },
+                      child: child,
+                    ),
                     child: Icon(
-                      Icons.crop_free,
-                      size: 20,
+                      Icons.person,
+                      size: 26,
                       color: Colors.black,
                     ),
-                    onTap: () {
-                      print("scanner=========");
-                    },
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Center(
+                    child: GestureDetector(
+                      onTap: () {
+                        print("switch-city---------");
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text("上海市"),
+                          Icon(
+                            Icons.expand_more,
+                            size: 20,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  child: Row(
+                    children: <Widget>[
+                      GestureDetector(
+                        child: Icon(
+                          Icons.message,
+                          size: 20,
+                          color: Colors.black,
+                        ),
+                        onTap: () {
+                          print("message==========");
+                        },
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(
+                            left: 20, top: 0, right: 10, bottom: 0),
+                        child: GestureDetector(
+                          child: Icon(
+                            Icons.crop_free,
+                            size: 20,
+                            color: Colors.black,
+                          ),
+                          onTap: () {
+                            print("scanner=========");
+                          },
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
           ),
-        ],
-      ),
     );
   }
 
@@ -178,5 +193,15 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     return Tab(
       text: s,
     );
+  }
+
+  _personIconTap(UserInfoModel userInfo) {
+    print("print--person----");
+    bool isLoginSuccess = userInfo.isLoginSuccess;
+    if(isLoginSuccess ?? false){
+      Navigator.pushNamed(context, "login");
+    }else{
+      _handlerDrawerButton(context);
+    }
   }
 }
