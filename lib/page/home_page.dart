@@ -1,6 +1,6 @@
 import 'package:flex_bus/util/navigator_util.dart';
 import 'package:flex_bus/widget/drawer_widget.dart';
-import 'package:flex_bus/widget/webview_util.dart';
+import 'package:flex_bus/widget/webview_bridge.dart';
 import 'package:flutter/material.dart';
 
 import 'flex_page.dart';
@@ -73,8 +73,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               RaisedButton(
                 child: Text("弹性公交"),
                 onPressed: () {
-                  NavigatorUtil.push(context, WebView(
-                    url: "http://ipts.zpmc.com/et-mobile/#/login",//http://ipts.zpmc.com/ids-admin/#/login
+//                  NavigatorUtil.push(context, WebView(
+//                    url: "http://ipts.zpmc.com/et-mobile/#/login",//http://ipts.zpmc.com/ids-admin/#/login
+//                    isNewPage: true,
+//                    title: "背景",
+//                  ));
+                  NavigatorUtil.push(context, WebViewBridge(
+                    url: "https://flutter.dev",//http://ipts.zpmc.com/ids-admin/#/login // "http://ipts.zpmc.com/et-mobile/#/login"
                     isNewPage: true,
                     title: "背景",
                   ));
