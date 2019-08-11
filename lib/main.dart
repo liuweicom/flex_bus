@@ -1,30 +1,45 @@
-import 'package:amap_base/amap_base.dart';
+import 'package:flex_bus/page/login_page.dart';
+import 'package:flex_bus/page/password_page.dart';
 import 'package:flutter/material.dart';
 
+import 'modal/user_info_model.dart';
 import 'page/home_page.dart';
 
-//void main() => runApp(MyApp());
-void main() async {
-//  await AMap.init('24bd96f1f4ebd7ff2f1719000c275ac9');//在android端无效
-//  await AMapLocation().init();
-  runApp(MyApp());
+import 'package:provider/provider.dart';
+
+///关于Provider的选择：
+///Provider:只提供恒定的数据，不能通知依赖它的子部件刷新
+///ListenableProvider ：此对象继承了Listenable抽象类的子类，由于无法混入，所以通过继承来获得 Listenable 的能力，同时必须实现其 addListener / removeListener 方法，手动管理收听者。ListenableProvider 同样可以接收混入的ChangeNotifier ，应为ChangeNotifier 为Listenable的实现
+///ChangeNotifierProvider：自动帮我们实现了听众的管理，它能够对子节点提供一个 继承 / 混入 / 实现 了 ChangeNotifier 的类，需要数据更新的时候调用 notifyListeners。ChangeNotifierProvider 会在你需要的时候，自动调用其 _disposer 方法。 Model 中重写 ChangeNotifier 的 dispose 方法，来释放其资源。这对于复杂 Model 的情况下十分有用。
+///ValueListenableProvider：提供实现了 继承 / 混入 / 实现 了 ValueListenable 的 Model，专门用于处理只有一个单一变化数据的 ChangeNotifier， ValueListenable 处理的类不再需要数据更新的时候调用 notifyListeners
+///StreamProvider：用作提供（provide）一条 Single Stream，
+///FutureProvider：
+void main() {
+  final userInfo = UserInfoModel();
+  final textSize = 48;
+  runApp(
+  MultiProvider(//当存在多个Provider时，为了避免嵌套过多，存在多个model的时候
+      providers: [
+        Provider.value(value: textSize),
+        ChangeNotifierProvider.value(value: userInfo),
+      ],
+      child: MyApp(),
+  )
+  );
 }
+
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      routes: {
+       "login": (BuildContext context) => LoginPage(),
+        "password": (BuildContext context) => PassWordPage(),
+        "homePage": (BuildContext context) => HomePage(),
+      },
+      title: 'flex_bus',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
       ),
       home: HomePage(),//MyHomePage(title: 'Flutter Demo Home Page')

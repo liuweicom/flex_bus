@@ -101,14 +101,14 @@ class _FlexPageState extends State<FlexPage> with AutomaticKeepAliveClientMixin{
                         color: Colors.black,
                       ),
                       onTap: (){
-//                        _getOnceLocation();
+                        _getOnceLocation();
                         print("location=====");
 //                        Scaffold.of(context).showSnackBar(SnackBar(
 //                          content: Text('定位间隔5秒'),
 //                          duration: Duration(seconds: 1),
 //                        ));
 //                        //interval: 5000,
-                        _updateMyLocationStyle(context, showMyLocation: true,myLocationIcon: "location_on");//, myLocationIcon: "location_on",myLocationType: LOCATION_TYPE_FOLLOW
+//                        _updateMyLocationStyle(context, showMyLocation: true,myLocationIcon: "location_on");//, myLocationIcon: "location_on",myLocationType: LOCATION_TYPE_FOLLOW
                       },
                     ),
 
@@ -133,9 +133,10 @@ class _FlexPageState extends State<FlexPage> with AutomaticKeepAliveClientMixin{
     _amapLocation
         .getLocation(options)
         .then((data){
+//          LocationMode locationMode = data as LocationMode;
           print(data.toString()+"onceLocation======");
         })
-        .then((_) => setState(() {}));
+        .then((_) => print("-------:"+_.toString()));
     } else {
     Scaffold.of(context)
         .showSnackBar(SnackBar(content: Text('权限不足')));
